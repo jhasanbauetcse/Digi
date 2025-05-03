@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">DigiBin</string>
+    <string name="customer">Customer</string>
+    <string name="collector">Collector</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+</resources>

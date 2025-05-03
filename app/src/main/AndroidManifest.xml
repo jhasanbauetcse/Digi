@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.abunayem.digibin"> <!-- SDK Versions -->
+    <uses-sdk
+        android:minSdkVersion="24"
+        android:targetSdkVersion="35" />
+    <!-- Permissions -->
+    <uses-permission android:name="android.permission.REORDER_TASKS" /> <!-- Package Queries for Testing -->
+    <queries>
+        <package android:name="androidx.test.orchestrator" />
+        <package android:name="androidx.test.services" />
+        <package android:name="com.google.android.apps.common.testing.services" />
+    </queries>
+
+    <application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:extractNativeLibs="false"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.DigiBin"
+        tools:targetApi="31">
+        <activity
+            android:name=".congratulation"
+            android:exported="false" />
+        <activity
+            android:name=".pickuprequest"
+            android:exported="false" />
+        <activity
+            android:name=".proceed"
+            android:exported="false" /> <!-- Preloaded Fonts -->
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
+
+        <activity
+            android:name=".MainActivity"
+            android:exported="false" />
+        <activity
+            android:name=".test"
+            android:exported="false" /> <!-- Main App Activities -->
+        <activity
+            android:name=".SignActivity"
+            android:exported="false" />
+        <activity
+            android:name=".loginActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SignupColl"
+            android:exported="false" />
+        <activity
+            android:name=".LoginColl"
+            android:exported="false" />
+        <activity
+            android:name=".ChooseLocationActivity"
+            android:exported="false" />
+        <activity
+            android:name=".StartActivity"
+            android:exported="false" /> <!-- Splash Screen (Launcher Activity) -->
+        <activity
+            android:name=".Splash_Screen"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity> <!-- Test-Only Activities (Invisible to normal users) -->
+        <uses-library android:name="android.test.runner" />
+    </application>
+
+</manifest>
