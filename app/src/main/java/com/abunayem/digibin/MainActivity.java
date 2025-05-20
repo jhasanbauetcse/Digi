@@ -1,21 +1,20 @@
 package com.abunayem.digibin;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
-
+import android.content.Intent;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreSettings;
+import com.google.firebase.firestore.Source;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -25,56 +24,90 @@ public class MainActivity extends AppCompatActivity {
     TextView locationTextView;
 
     private FirebaseAuth mAuth;
-    private DatabaseReference myRef;
+    private FirebaseFirestore firestore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Initialize Firebase Auth and Database
+        // Initialize Firebase with persistence
         mAuth = FirebaseAuth.getInstance();
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        myRef = database.getReference("customer");
+        firestore = FirebaseFirestore.getInstance();
+
+        // Enable Firestore persistence
+        FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
+                .setPersistenceEnabled(true)
+                .build();
+        firestore.setFirestoreSettings(settings);
 
         // Initialize views
-        userNameTextView = findViewById(R.id.textView12);  // TextView for user name
-        locationTextView = findViewById(R.id.textView13);  // TextView for location
+        userNameTextView = findViewById(R.id.textView12);
+        locationTextView = findViewById(R.id.textView13);
 
-        // Retrieve the location passed from ChooseLocationActivity
-        String selectedLocation = getIntent().getStringExtra("selectedLocation");
-        if (selectedLocation != null) {
-            locationTextView.setText(selectedLocation);
-        } else {
-            locationTextView.setText("Location");
-        }
-
-        // Check if user is signed in
+        // Check if user is signed in (works offline)
         if (mAuth.getCurrentUser() != null) {
             String userId = mAuth.getCurrentUser().getUid();
-
-            // Retrieve user's name from Firebase Database
-            myRef.child(userId).child("name").get().addOnCompleteListener(task -> {
-                if (task.isSuccessful() && task.getResult() != null) {
-                    String userName = task.getResult().getValue(String.class);
-                    if (userName != null) {
-                        userNameTextView.setText(userName);
-                    }
-                } else {
-                    Toast.makeText(MainActivity.this, "Failed to retrieve name.", Toast.LENGTH_SHORT).show();
-                }
-            });
+            loadUserData(userId);
         } else {
-            userNameTextView.setText("customer not signed in");
+            // If not signed in, redirect to login
+            redirectToLogin();
+            return;
         }
 
         // Initialize BottomNavigationView
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
-
-        // Find NavController using NavHostFragment
         navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-
-        // Set up BottomNavigationView with NavController
         NavigationUI.setupWithNavController(bottomNavigationView, navController);
+    }
+
+    private void loadUserData(String userId) {
+        // Try to get cached data first
+        firestore.collection("customers").document(userId)
+                .get(Source.CACHE)
+                .addOnCompleteListener(cacheTask -> {
+                    if (cacheTask.isSuccessful() && cacheTask.getResult().exists()) {
+                        updateUI(cacheTask.getResult());
+                    } else {
+                        // No cached data, try network
+                        firestore.collection("customers").document(userId)
+                                .get(Source.SERVER)
+                                .addOnCompleteListener(serverTask -> {
+                                    if (serverTask.isSuccessful() && serverTask.getResult().exists()) {
+                                        updateUI(serverTask.getResult());
+                                    } else {
+                                        showDataError();
+                                    }
+                                });
+                    }
+                });
+    }
+
+    private void updateUI(DocumentSnapshot document) {
+        String userName = document.getString("name");
+        String location = document.getString("location");
+
+        if (userName != null) {
+            userNameTextView.setText(userName);
+        } else {
+            userNameTextView.setText("Name not found");
+        }
+
+        if (location != null) {
+            locationTextView.setText(location);
+        } else {
+            locationTextView.setText("Location not found");
+        }
+    }
+
+    private void showDataError() {
+        userNameTextView.setText("Error loading data");
+        locationTextView.setText("Try again later");
+    }
+
+    private void redirectToLogin() {
+        Toast.makeText(this, "Please sign in", Toast.LENGTH_SHORT).show();
+        finish();
+        startActivity(new Intent(this, loginActivity.class));
     }
 }

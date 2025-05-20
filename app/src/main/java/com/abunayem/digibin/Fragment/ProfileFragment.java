@@ -11,22 +11,22 @@ import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
-import com.abunayem.digibin.loginActivity; // Import your LoginActivity
+import com.abunayem.digibin.devloper;
+import com.abunayem.digibin.loginActivity;
+import com.abunayem.digibin.shareapp;
+import com.abunayem.digibin.support;
 import com.abunayem.digibin.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class ProfileFragment extends Fragment {
 
     private TextView profileName, profileEmail;
     private Button buttonHome, buttonSupport, buttonDeveloper, buttonShare, buttonLogout;
     private FirebaseAuth mAuth;
-    private DatabaseReference customerRef;
+    private FirebaseFirestore firestore;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -38,10 +38,9 @@ public class ProfileFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
-        // Initialize Firebase Auth and Database
+        // Initialize Firebase Auth and Firestore
         mAuth = FirebaseAuth.getInstance();
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        customerRef = database.getReference("customer");
+        firestore = FirebaseFirestore.getInstance();
 
         // Initialize the TextViews
         profileName = view.findViewById(R.id.profilrName1);
@@ -54,38 +53,51 @@ public class ProfileFragment extends Fragment {
         buttonShare = view.findViewById(R.id.button5);
         buttonLogout = view.findViewById(R.id.button8);
 
-        // Get current user
+        // Load current user profile
         FirebaseUser currentUser = mAuth.getCurrentUser();
 
         if (currentUser != null) {
-            // User is logged in, retrieve profile data from Firebase
             String userId = currentUser.getUid();
             loadUserProfile(userId);
         } else {
             Toast.makeText(getActivity(), "User not logged in", Toast.LENGTH_SHORT).show();
         }
 
-        // Handle button actions (Optional)
-        buttonLogout.setOnClickListener(v -> {
-            // Log the user out
-            mAuth.signOut();
+        // Button click listeners
+        buttonDeveloper.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), devloper.class);
+            startActivity(intent);
+        });
 
-            // Redirect to login activity
+        buttonSupport.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), support.class);
+            startActivity(intent);
+        });
+
+        buttonShare.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), shareapp.class);
+            startActivity(intent);
+        });
+
+        buttonLogout.setOnClickListener(v -> {
+            mAuth.signOut();
             Intent intent = new Intent(getActivity(), loginActivity.class);
             startActivity(intent);
-            getActivity().finish(); // Close the current activity to prevent the user from returning
+            getActivity().finish();
         });
+
+        // You can implement buttonHome if needed here
 
         return view;
     }
 
     private void loadUserProfile(String userId) {
-        customerRef.child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot snapshot) {
-                // Retrieve name and email from Firebase
-                String name = snapshot.child("name").getValue(String.class);
-                String email = snapshot.child("email").getValue(String.class);
+        DocumentReference userRef = firestore.collection("customers").document(userId);
+
+        userRef.get().addOnSuccessListener(documentSnapshot -> {
+            if (documentSnapshot.exists()) {
+                String name = documentSnapshot.getString("name");
+                String email = documentSnapshot.getString("email");
 
                 if (name != null && email != null) {
                     profileName.setText(name);
@@ -94,11 +106,6 @@ public class ProfileFragment extends Fragment {
                     Toast.makeText(getActivity(), "Profile data not found", Toast.LENGTH_SHORT).show();
                 }
             }
-
-            @Override
-            public void onCancelled(DatabaseError error) {
-                Toast.makeText(getActivity(), "Failed to load profile", Toast.LENGTH_SHORT).show();
-            }
-        });
+        }).addOnFailureListener(e -> Toast.makeText(getActivity(), "Failed to load profile", Toast.LENGTH_SHORT).show());
     }
 }

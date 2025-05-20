@@ -27,7 +27,7 @@
             android:layout_below="@id/imageView7"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="35dp"
-            android:text="Login To Your Account"
+            android:text="Collector\nLogin To Your Account"
             android:textAlignment="center"
             android:textColor="@color/green"
             android:textSize="25sp"

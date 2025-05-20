@@ -2,51 +2,47 @@ package com.abunayem.digibin;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
+import android.text.TextUtils;
+import android.util.Patterns;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatButton;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreSettings;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class SignActivity extends AppCompatActivity {
 
     private EditText nameEditText, emailEditText, passwordEditText;
-    private AppCompatButton signUpButton;
-    private TextView loginTextView;
     private FirebaseAuth mAuth;
-    private FirebaseDatabase database;
-    private DatabaseReference myRef;
+    private FirebaseFirestore firestore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign);
 
-        // Initialize Firebase Auth and Database
+        // Initialize Firebase
         mAuth = FirebaseAuth.getInstance();
-        database = FirebaseDatabase.getInstance();
-        myRef = database.getReference("customer");
+        firestore = FirebaseFirestore.getInstance();
+        FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
+                .setPersistenceEnabled(true)
+                .build();
+        firestore.setFirestoreSettings(settings);
 
-        // Find Views
         nameEditText = findViewById(R.id.editTextText);
         emailEditText = findViewById(R.id.editTextTextEmailAddress2);
         passwordEditText = findViewById(R.id.editTextTextPassword2);
-        signUpButton = findViewById(R.id.button);
-        loginTextView = findViewById(R.id.textView7);
 
-        // Sign up button click listener
-        signUpButton.setOnClickListener(v -> createAccount());
-
-        // Login text click listener
-        loginTextView.setOnClickListener(v -> {
-            // Navigate to Login activity
+        findViewById(R.id.button).setOnClickListener(v -> createAccount());
+        findViewById(R.id.textView7).setOnClickListener(v -> {
             startActivity(new Intent(SignActivity.this, loginActivity.class));
+            finish();
         });
     }
 
@@ -55,31 +51,65 @@ public class SignActivity extends AppCompatActivity {
         String email = emailEditText.getText().toString().trim();
         String password = passwordEditText.getText().toString().trim();
 
-        if (name.isEmpty() || email.isEmpty() || password.isEmpty()) {
-            Toast.makeText(SignActivity.this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
+        if (TextUtils.isEmpty(name)) {
+            nameEditText.setError("Name is required");
             return;
         }
 
-        // Firebase Authentication sign up
+        if (TextUtils.isEmpty(email) || !Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            emailEditText.setError("Valid email is required");
+            return;
+        }
+
+        if (TextUtils.isEmpty(password) || password.length() < 6) {
+            passwordEditText.setError("Password must be at least 6 characters");
+            return;
+        }
+
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
-                        // Save user name and email to Firebase Realtime Database
                         String userId = mAuth.getCurrentUser().getUid();
-                        myRef.child(userId).child("name").setValue(name); // Save name
-                        myRef.child(userId).child("email").setValue(email); // Save email
+                        Map<String, Object> customer = new HashMap<>();
+                        customer.put("name", name);
+                        customer.put("email", email);
+                        customer.put("points", 0);
 
-                        // Navigate to MainActivity and pass the name
-                        Intent intent = new Intent(SignActivity.this, loginActivity.class);
-                        intent.putExtra("userName", name); // Pass name to MainActivity
-                        startActivity(intent);
+                        firestore.collection("customers").document(userId).set(customer)
+                                .addOnSuccessListener(aVoid -> {
+                                    // Sign out the user immediately after account creation
+                                    mAuth.signOut();
 
-                        // Show success message and finish this activity
-                        Toast.makeText(SignActivity.this, "Account created successfully.", Toast.LENGTH_SHORT).show();
-                        finish();
+                                    Toast.makeText(SignActivity.this,
+                                            "Account created successfully. Please login.", Toast.LENGTH_SHORT).show();
+
+                                    // Redirect to login page
+                                    Intent intent = new Intent(SignActivity.this, loginActivity.class);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    startActivity(intent);
+                                    finish();
+                                })
+                                .addOnFailureListener(e -> {
+                                    // Delete the user if Firestore write fails
+                                    if (mAuth.getCurrentUser() != null) {
+                                        mAuth.getCurrentUser().delete();
+                                    }
+                                    Toast.makeText(SignActivity.this,
+                                            "Failed to save customer data: " + e.getMessage(),
+                                            Toast.LENGTH_SHORT).show();
+                                });
                     } else {
-                        Toast.makeText(SignActivity.this, "Account creation failed. Please try again.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SignActivity.this,
+                                "Registration failed: " + task.getException().getMessage(),
+                                Toast.LENGTH_LONG).show();
                     }
                 });
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(SignActivity.this, loginActivity.class));
+        finish();
     }
 }

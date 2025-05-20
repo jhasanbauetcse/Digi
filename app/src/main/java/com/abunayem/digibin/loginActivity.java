@@ -2,51 +2,49 @@ package com.abunayem.digibin;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatButton;
+
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreSettings;
 
 public class loginActivity extends AppCompatActivity {
 
     private EditText emailEditText, passwordEditText;
-    private AppCompatButton loginButton;
-    private TextView signUpTextView;
     private FirebaseAuth mAuth;
+    private FirebaseFirestore firestore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Initialize Firebase with persistence
+        mAuth = FirebaseAuth.getInstance();
+        firestore = FirebaseFirestore.getInstance();
+        FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
+                .setPersistenceEnabled(true)
+                .build();
+        firestore.setFirestoreSettings(settings);
+
+        // Check if user is already logged in
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser != null) {
+            verifyCustomer(currentUser.getUid());
+            return;
+        }
+
         setContentView(R.layout.activity_login);
 
-        // Initialize Firebase Auth
-        mAuth = FirebaseAuth.getInstance();
-
-        // Find Views
         emailEditText = findViewById(R.id.editTextTextEmailAddress);
         passwordEditText = findViewById(R.id.editTextTextPassword);
-        loginButton = findViewById(R.id.loginButton);
-        signUpTextView = findViewById(R.id.textView4);
 
-        // Login button click listener
-        loginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                loginUser();
-            }
-        });
-
-        // Sign up text click listener
-        signUpTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Navigate to Sign Up activity
-                startActivity(new Intent(loginActivity.this, SignActivity.class));
-            }
-        });
+        findViewById(R.id.loginButton).setOnClickListener(v -> loginUser());
+        findViewById(R.id.textView4).setOnClickListener(v ->
+                startActivity(new Intent(loginActivity.this, SignActivity.class)));
     }
 
     private void loginUser() {
@@ -58,15 +56,27 @@ public class loginActivity extends AppCompatActivity {
             return;
         }
 
-        // Firebase Authentication login
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
-                        // Navigate to next activity (e.g., main app screen)
+                        verifyCustomer(mAuth.getCurrentUser().getUid());
+                    } else {
+                        Toast.makeText(loginActivity.this, "Authentication failed: " +
+                                task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    private void verifyCustomer(String uid) {
+        firestore.collection("customers").document(uid).get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful() && task.getResult().exists()) {
                         startActivity(new Intent(loginActivity.this, ChooseLocationActivity.class));
                         finish();
                     } else {
-                        Toast.makeText(loginActivity.this, "Authentication failed. Please try again.", Toast.LENGTH_SHORT).show();
+                        mAuth.signOut();
+                        Toast.makeText(loginActivity.this,
+                                "Access restricted to customers only", Toast.LENGTH_LONG).show();
                     }
                 });
     }

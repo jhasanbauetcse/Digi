@@ -15,14 +15,12 @@
         android:name="com.abunayem.digibin.Fragment.pricelistFragment"
         android:label="fragment_pricelist"
         tools:layout="@layout/fragment_pricelist" />
-    <fragment
-        android:id="@+id/historyFragment"
-        android:name="com.abunayem.digibin.Fragment.HistoryFragment"
-        android:label="fragment_history"
-        tools:layout="@layout/fragment_history" />
+
     <fragment
         android:id="@+id/profileFragment"
         android:name="com.abunayem.digibin.Fragment.ProfileFragment"
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile" />
+
+
 </navigation>

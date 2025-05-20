@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:background="@color/softgreen"
-        tools:context=".Fragment.ProfileFragment">
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/softgreen"
+    tools:context=".Fragment.ProfileFragment">
 
     <ImageView
         android:id="@+id/profilrimageView1"
@@ -27,15 +27,14 @@
         app:layout_constraintEnd_toEndOf="@+id/profilrimageView1"
         app:layout_constraintHorizontal_bias="0.578"
         app:layout_constraintStart_toStartOf="@+id/profilrimageView1"
-        app:layout_constraintTop_toTopOf="@+id/profilrimageView1"
-        />
+        app:layout_constraintTop_toTopOf="@+id/profilrimageView1" />
 
     <TextView
         android:id="@+id/profilrName1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="44dp"
-        android:text="Md Abu Nayem"
+        android:text=" "
         android:textColor="@color/green"
         android:textSize="16sp"
         android:textStyle="bold"
@@ -49,7 +48,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
-        android:text="mdabunayemislam@gmail.com"
+        android:text=" "
         android:textColor="@color/green"
         android:textSize="16sp"
         android:textStyle="bold"
@@ -57,30 +56,6 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/profilrName1"
         app:layout_constraintTop_toBottomOf="@+id/profilrName1" />
-
-    <ImageView
-        android:id="@+id/imageView27"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/profileline"
-        app:layout_constraintBottom_toTopOf="@+id/button8"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button5"
-        app:layout_constraintVertical_bias="0.565" />
-
-    <ImageView
-        android:id="@+id/imageView50"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/profileline"
-        app:layout_constraintBottom_toTopOf="@+id/button8"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button5"
-        app:layout_constraintVertical_bias="0.565" />
 
     <ImageView
         android:id="@+id/imageView50"
@@ -94,10 +69,10 @@
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/button78"
-        android:layout_width="309dp"
+        android:layout_width="match_parent"
         android:layout_height="54dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="152dp"
+        android:layout_marginTop="44dp"
         android:background="@drawable/edittext"
         android:drawableLeft="@drawable/home"
         android:drawablePadding="10dp"
@@ -109,13 +84,13 @@
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.303"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/profilrimageView1" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/button796"
-        android:layout_width="309dp"
+        android:layout_width="match_parent"
         android:layout_height="54dp"
         android:layout_marginTop="12dp"
         android:background="@drawable/edittext"
@@ -128,13 +103,13 @@
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.317"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button78" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/button4"
-        android:layout_width="309dp"
+        android:layout_width="match_parent"
         android:layout_height="54dp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="12dp"
@@ -142,23 +117,23 @@
         android:drawableLeft="@drawable/devloper"
         android:drawablePadding="10dp"
         android:padding="10dp"
-        android:text="Devloper"
+        android:text="Developer"
         android:textAlignment="textStart"
         android:textAllCaps="true"
         android:textColor="@color/green"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.302"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button796" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/button5"
-        android:layout_width="309dp"
+        android:layout_width="match_parent"
         android:layout_height="54dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="12dp"
         android:background="@drawable/edittext"
         android:drawableLeft="@drawable/shared"
         android:drawablePadding="10dp"
@@ -170,16 +145,17 @@
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.303"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button4" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/button8"
-        android:layout_width="312dp"
+        android:layout_width="match_parent"
         android:layout_height="51dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="36dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="8dp"
         android:background="@drawable/edittext"
         android:drawableLeft="@drawable/logout"
         android:drawablePadding="10dp"
@@ -187,26 +163,26 @@
         android:text="Log Out"
         android:textAlignment="textStart"
         android:textAllCaps="true"
+
         android:textColor="@color/green"
         android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/imageView49"
+
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.323"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button5"
-        app:layout_constraintVertical_bias="0.047" />
+        app:layout_constraintVertical_bias="0.708" />
 
     <ImageView
         android:id="@+id/imageView49"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
+        android:layout_width="405dp"
+        android:layout_height="217dp"
         android:src="@drawable/fram"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button8" />
+        app:layout_constraintStart_toStartOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

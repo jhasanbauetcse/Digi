@@ -8,8 +8,6 @@
     tools:context=".Fragment.HomeFragment">
 
 
-    //////////// points and pickups part //////////
-
     <ImageView
         android:id="@+id/imageView4"
         android:layout_width="match_parent"
@@ -36,15 +34,15 @@
 
     <ImageView
         android:id="@+id/imageView10"
-        android:layout_width="36dp"
-        android:layout_height="26dp"
-        android:src="@drawable/delivery"
+        android:layout_width="138dp"
+        android:layout_height="24dp"
+        android:src="@drawable/status"
         app:layout_constraintBottom_toBottomOf="@+id/imageView4"
         app:layout_constraintEnd_toEndOf="@+id/imageView4"
-        app:layout_constraintHorizontal_bias="0.367"
+        app:layout_constraintHorizontal_bias="0.194"
         app:layout_constraintStart_toEndOf="@+id/imageView9"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.29" />
+        app:layout_constraintVertical_bias="0.311" />
 
     <ImageView
         android:id="@+id/imageView9"
@@ -55,7 +53,7 @@
         app:layout_constraintEnd_toEndOf="@+id/imageView4"
         app:layout_constraintStart_toStartOf="@+id/imageView4"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.516" />
+        app:layout_constraintVertical_bias="0.621" />
 
     <TextView
         android:id="@+id/textView9"
@@ -78,7 +76,7 @@
         android:layout_width="40dp"
         android:layout_height="13dp"
         android:gravity="center"
-        android:text="3000"
+        android:text="00.00"
         android:textColor="@color/black"
         android:textSize="10sp"
         android:textStyle="bold"
@@ -89,39 +87,24 @@
         app:layout_constraintTop_toBottomOf="@+id/textView9"
         app:layout_constraintVertical_bias="0.0" />
 
+
     <TextView
         android:id="@+id/textView15"
-        android:layout_width="39dp"
-        android:layout_height="16dp"
+        android:layout_width="136dp"
+        android:layout_height="28dp"
         android:gravity="center"
-        android:textColor="@color/black"
+        android:paddingRight="10dp"
 
-        android:text="Pickups"
+        android:text="  Status"
+        android:textColor="@color/black"
         android:textSize="10sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/imageView4"
         app:layout_constraintEnd_toEndOf="@+id/imageView10"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/imageView10"
         app:layout_constraintTop_toBottomOf="@+id/imageView10"
         app:layout_constraintVertical_bias="0.0" />
-
-    <TextView
-        android:id="@+id/textView17"
-        android:layout_width="40dp"
-        android:layout_height="13dp"
-        android:gravity="center"
-        android:text="07"
-        android:textColor="@color/black"
-        android:textSize="10sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView4"
-        app:layout_constraintEnd_toEndOf="@+id/textView15"
-        app:layout_constraintStart_toStartOf="@+id/textView15"
-        app:layout_constraintTop_toBottomOf="@+id/textView15"
-        app:layout_constraintVertical_bias="0.0" />
-
-    //////////// Category //////////
 
     <ImageView
         android:id="@+id/imageView11"
@@ -307,7 +290,7 @@
         app:layout_constraintTop_toTopOf="@+id/imageView18" />
 
     <TextView
-        android:id="@+id/textView18"
+        android:id="@+id/textView18656"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -338,7 +321,7 @@
         app:layout_constraintVertical_bias="0.222" />
 
     <TextView
-        android:id="@+id/textView21"
+        android:id="@+id/textView2100"
         android:layout_width="57dp"
         android:layout_height="15dp"
         android:gravity="center"
@@ -372,7 +355,7 @@
         app:layout_constraintVertical_bias="0.222" />
 
     <TextView
-        android:id="@+id/textView21"
+        android:id="@+id/textView2156"
         android:layout_width="57dp"
         android:layout_height="15dp"
         android:gravity="center"
@@ -388,7 +371,7 @@
         app:layout_constraintVertical_bias="0.066" />
 
     <TextView
-        android:id="@+id/textView18"
+        android:id="@+id/textView180"
         android:layout_width="57dp"
         android:layout_height="15dp"
         android:gravity="center"
@@ -405,7 +388,7 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <TextView
-        android:id="@+id/textView18"
+        android:id="@+id/textView1856"
         android:layout_width="67dp"
         android:layout_height="15dp"
         android:gravity="center"
@@ -421,7 +404,7 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <TextView
-        android:id="@+id/textView18"
+        android:id="@+id/textView1876"
         android:layout_width="67dp"
         android:layout_height="15dp"
         android:gravity="center"
@@ -438,7 +421,7 @@
         app:layout_constraintVertical_bias="0.117" />
 
     <TextView
-        android:id="@+id/textView18"
+        android:id="@+id/textView186565"
         android:layout_width="67dp"
         android:layout_height="15dp"
         android:gravity="center"
@@ -454,7 +437,6 @@
         app:layout_constraintVertical_bias="0.15" />
 
 
-    //////////// Pickups Request //////////
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/button34"

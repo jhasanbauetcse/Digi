@@ -10,8 +10,8 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.DocumentReference;
 
 public class ChooseLocationActivity extends AppCompatActivity {
 
@@ -19,8 +19,7 @@ public class ChooseLocationActivity extends AppCompatActivity {
     Button btnNext;
 
     private FirebaseAuth mAuth;
-    private FirebaseDatabase database;
-    private DatabaseReference myRef;
+    private FirebaseFirestore firestore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,13 +30,12 @@ public class ChooseLocationActivity extends AppCompatActivity {
         autoCompleteTextView = findViewById(R.id.autoCompleteTextView);
         btnNext = findViewById(R.id.button2);
 
-        // Initialize Firebase Auth and Database
+        // Initialize Firebase Auth and Firestore
         mAuth = FirebaseAuth.getInstance();
-        database = FirebaseDatabase.getInstance();
-        myRef = database.getReference("customer"); // Reference to 'users' node
+        firestore = FirebaseFirestore.getInstance();
 
-        // Define a list of locations for dropdown
-        String[] locations = {"Rajshahi","Natore","Bogura","Dhaka","Chapainawabganj","Rangpur", "Chittagong", "Khulna", "Sylhet"};
+        // Define a list of locations for the dropdown
+        String[] locations = {"Rajshahi", "Natore", "Bogura", "Dhaka", "Chapainawabganj", "Rangpur", "Chittagong", "Khulna", "Sylhet"};
 
         // Set up an ArrayAdapter
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, locations);
@@ -53,8 +51,9 @@ public class ChooseLocationActivity extends AppCompatActivity {
                 // Get the current user's UID
                 String userId = mAuth.getCurrentUser().getUid();
 
-                // Save location under the current user's UID within the 'users' node in Firebase
-                myRef.child(userId).child("location").setValue(selectedLocation)
+                // Save location under the current user's document in Firestore
+                DocumentReference userRef = firestore.collection("customers").document(userId);
+                userRef.update("location", selectedLocation)
                         .addOnCompleteListener(task -> {
                             if (task.isSuccessful()) {
                                 Toast.makeText(ChooseLocationActivity.this, "Location saved!", Toast.LENGTH_SHORT).show();

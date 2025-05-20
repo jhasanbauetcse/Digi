@@ -10,6 +10,7 @@ public class StartActivity extends AppCompatActivity {
 
     Button customerButton;
     Button collectorButton;
+    Button adminButton; // Declare admin button
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,7 +19,8 @@ public class StartActivity extends AppCompatActivity {
 
         // Initialize buttons
         customerButton = findViewById(R.id.customerButton);
-        collectorButton = findViewById(R.id.collectorButton);  // Initialize this properly
+        collectorButton = findViewById(R.id.collectorButton);
+        adminButton = findViewById(R.id.adminButton); // Initialize admin button
 
         // Set OnClickListener for customerButton
         customerButton.setOnClickListener(v -> {
@@ -29,6 +31,12 @@ public class StartActivity extends AppCompatActivity {
         // Set OnClickListener for collectorButton
         collectorButton.setOnClickListener(v -> {
             Intent intent = new Intent(StartActivity.this, LoginColl.class);
+            startActivity(intent);
+        });
+
+        // Set OnClickListener for adminButton
+        adminButton.setOnClickListener(v -> {
+            Intent intent = new Intent(StartActivity.this, adminlogin.class);
             startActivity(intent);
         });
     }

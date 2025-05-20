@@ -15,7 +15,7 @@ public class congratulation extends AppCompatActivity {
         setContentView(R.layout.activity_congratulation);  // Use your provided layout
 
         // Find the "Back to Home" button
-        Button backToHomeButton = findViewById(R.id.button20);
+        Button backToHomeButton = findViewById(R.id.button_submit);
 
         // Set an OnClickListener for the button
         backToHomeButton.setOnClickListener(new View.OnClickListener() {

@@ -25,13 +25,55 @@
         android:theme="@style/Theme.DigiBin"
         tools:targetApi="31">
         <activity
+            android:name=".admin_total_collection"
+            android:exported="false" />
+        <activity
+            android:name=".shareapp"
+            android:exported="false" />
+        <activity
+            android:name=".devloper"
+            android:exported="false" />
+        <activity
+            android:name=".support"
+            android:exported="false" />
+        <activity
+            android:name=".adminpricelistupdate"
+            android:exported="false" />
+        <activity
+            android:name=".adminprofile"
+            android:exported="false" />
+        <activity
+            android:name=".adminsignup"
+            android:exported="false" />
+        <activity
+            android:name=".adminlogin"
+            android:exported="false" />
+        <activity
+            android:name=".adminmain"
+            android:exported="false" />
+        <activity
+            android:name=".collprofile"
+            android:exported="false" />
+        <activity
+            android:name=".Status_Collector"
+            android:exported="false" />
+        <activity
+            android:name=".Admin_coll_assign"
+            android:exported="false" />
+        <activity
+            android:name=".CollMainActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Status_Admin"
+            android:exported="false" />
+        <activity
             android:name=".congratulation"
             android:exported="false" />
         <activity
             android:name=".pickuprequest"
             android:exported="false" />
         <activity
-            android:name=".proceed"
+            android:name=".Collector_calculate"
             android:exported="false" /> <!-- Preloaded Fonts -->
         <meta-data
             android:name="preloaded_fonts"
@@ -39,6 +81,9 @@
 
         <activity
             android:name=".MainActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Status_Customer"
             android:exported="false" />
         <activity
             android:name=".test"
@@ -63,13 +108,15 @@
             android:exported="false" /> <!-- Splash Screen (Launcher Activity) -->
         <activity
             android:name=".Splash_Screen"
-            android:exported="true">
+            android:exported="true"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity> <!-- Test-Only Activities (Invisible to normal users) -->
+        </activity>
+
         <uses-library android:name="android.test.runner" />
     </application>
 
